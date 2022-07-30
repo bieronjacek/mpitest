@@ -1,0 +1,47 @@
+#! /bin/csh
+#
+#  script to setup /home/bieron/dir?*  on ZOA local machines
+#                                                       J Bieron
+
+  set lazy   = 'lazy.if.uj.edu.pl'
+#
+# set tatry  = 'tatry.if.uj.edu.pl'
+# set gorce  = 'gorce.if.uj.edu.pl'
+#
+
+set remote_hosts=( \
+ $lazy \
+ )
+
+echo
+echo remote_hosts: ${remote_hosts[*]}
+
+foreach remote_host ( ${remote_hosts} )
+  echo
+  echo remote_host: ${remote_host}
+  ssh ${remote_host} mkdir -p -v /home/bieron/mpitestrun
+  scp test_mpi_OpenMP.exe ${remote_host}:mpitestrun/test_mpi_OpenMP.exe
+  echo transfer to ${remote_host} done
+end
+
+echo
+scp input_chiffre ${lazy}:mpitestrun/input_chiffre
+
+echo
+echo all host transfers done
+echo
+
+exit
+
+*******************************************************************************
+
+set remote_hosts = \
+  "$lazy $pamir $clone11 $clone12 $clone14 $clone15 $clone16 $clone17 $clone18"
+
+ $clone10 \
+ $clone11 \
+ $clone12 \
+
+  set clone10 = clone10.if.uj.edu.pl 
+  set clone11 = clone11.if.uj.edu.pl 
+  set clone12 = clone12.if.uj.edu.pl 

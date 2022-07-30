@@ -1,0 +1,25 @@
+#!/bin/csh
+
+# echo; date; echo ; ./batch_run ; date ; gotowe
+
+cp input_threads /home/bieron/mpitestrun/input_threads
+cp input_chiffre  /home/bieron/mpitestrun/input_chiffre
+cp input_matrix  /home/bieron/mpitestrun/input_matrix
+
+mpirun -wd /home/bieron/mpitestrun -hostfile mpd.hosts -np 6 ./test_mpi_OpenMP.exe < xinput > & youtput
+
+exit
+
+##########################################################################
+
+setenv OMP_NUM_THREADS 4
+
+mpirun -wd /home/bieron/mpitestrun -hostfile mpd.hosts -np 5
+
+ssh pamir.if.uj.edu.pl setenv OMP_NUM_THREADS 4
+
+# lamboot lamnodes
+# mpirun -v -wd /home/bieron/mpitest --hostfile hostfile -np 3 test_mpi
+# mpirun -v -wd /home/bieron/mpitestrun           -np 6 test_mpi < input
+mpirun -wd /home/bieron/mpitestrun -np 6 test_mpi_OpenMP.exe < xinput > &youtput
+

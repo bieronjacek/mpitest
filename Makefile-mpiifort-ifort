@@ -1,0 +1,77 @@
+EXE = test_mpi_OpenMP.exe
+
+# CC = mpicc
+# CFLAGS = -O
+
+# gFC = gfortran
+# gFFLAGS =
+
+FC = mpiifort
+F90 = mpiifort
+
+OMPI_F77 = ifort
+OMPI_FC = ifort
+
+# compilation options
+# F90FLAGS = -O0 -g -debug -traceback -zero -save --assume no2underscore
+# FFLAGS = -O2
+# F90FLAGS = -O2
+OMPI_FFLAGS = -O2
+OMPI_FCFLAGS = -O2
+
+# loader 
+# LDFLAGS = -L/usr/lib
+# LD_FLAGS = ""
+
+# mpi lib
+# MPI_FFLAGS = -lmpi -lmpi_f90 -lmpi_f77
+# MPI_FFLAGS = -L/usr/lib/openmpi/lib -lmpi -lmpi_f90 -lmpi_f77
+# MPI_FFLAGS = -L/usr/local/lib -lmpi -lmpi_f90 -lmpi_f77
+# MPI_FFLAGS = ""
+# MPI_FFLAGS = -L/usr/lib -lmpi -lmpi_f90 -lmpi_f77
+
+# include
+# mpif.h
+# MPI_INC = -I
+# MPI_INC = -I/usr/local/include
+# MPI_INC = ""
+
+OBJ = \
+program_test_mpi_OpenMP.o slaves.o gauss_summa.o matrixDotVector.o \
+loopthread.o \
+dlam0.o dlamch.o dlamc1.o dlamc2.o dlamc3.o lsame.o dlamc4.o dlamc5.o
+
+MOD = \
+module_mpi_universe.o module_io_numbers.o module_gauss_summa_interface.o module_matrixAXY.o
+
+$(EXE): $(OBJ) $(MOD)
+	$(FC) -openmp $(LDFLAGS) -o $@ $(OBJ) $(MOD) \
+	$(OMPI_FFLAGS) $(MPI_INC) 
+
+# 	 -shared-intel \
+# -openmp-profile 
+# -shared-intel = support for "feupdateenv is not implemented"
+
+clean:
+	rm -f $(OBJ) *.mod *.o
+
+purge:
+	rm -f $(OBJ) *.mod *.o *.exe
+
+.SUFFIXES: $(SUFFIXES) .f90
+
+.f.o: 
+	$(FC) -c -openmp $(FFLAGS) $(OMPI_FFLAGS) $(MPI_INC) $*.f
+
+.f90.o:
+	$(F90) -c -openmp $(F90FLAGS) $(OMPI_FFLAGS) $(MPI_INC) $<
+
+gauss_summa.o: module_mpi_universe.o module_gauss_summa_interface.o
+
+matrixDotVector.o:  module_mpi_universe.o module_io_numbers.o module_matrixAXY.o
+
+slaves.o: module_mpi_universe.o module_io_numbers.o module_gauss_summa_interface.o
+
+program_test_mpi_OpenMP.o: module_mpi_universe.o module_io_numbers.o module_matrixAXY.o
+
+loopthread.o: module_io_numbers.o

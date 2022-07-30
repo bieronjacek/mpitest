@@ -1,0 +1,63 @@
+#!/bin/csh
+
+# echo; date; echo ; ./batch_run ; date ; gotowe
+
+source ~/.cshrc.stub.mpitest
+
+make purge
+make
+make clean
+
+if (-e test_mpi_OpenMP.exe) then
+  ./Batch_disks-mkdir
+else
+  echo
+  echo make failed = test_mpi_OpenMP.exe not made
+  echo
+  exit
+endif
+
+cp input_threads /home/bieron/mpitestrun/input_threads
+cp input_chiffre  /home/bieron/mpitestrun/input_chiffre
+cp input_matrix  /home/bieron/mpitestrun/input_matrix
+
+date
+# mpiexec --timeout 600 
+mpiexec --verbose --display-map --display-allocation --output-proctable --merge-stderr-to-stdout -wd /home/bieron/mpitestrun -hostfile mpd.hosts -np 6 ./test_mpi_OpenMP.exe  > &  youtput
+date
+
+set tmpm = temporary_mail_$$
+set SubJect = mpitest
+cp youtput $tmpm 
+mv $tmpm ~/$tmpm
+mutt -s "${SubJect}" jacek.bieron@uj.edu.pl < ~/$tmpm >& /dev/null
+rm ~/$tmpm
+unset tmpm
+unset SubJect
+
+and_what_next
+
+exit
+
+##########################################################################
+
+mpirun --timeout 16 --verbose -np 6 
+
+--display-allocation --output-proctable --merge-stderr-to-stdout -wd /home/bieron/mpitestrun -hostfile mpd.hosts -np 6 ./test_mpi_OpenMP.exe  > &  youtput
+
+##########################################################################
+
+setenv OMP_NUM_THREADS 4
+
+mpirun -wd /home/bieron/mpitestrun -hostfile mpd.hosts -np 5
+
+mpirun -r ssh -genv I_MPI_DEVICE rdssm -np 4 ./test_mpi.exe
+mpirun  -v -wd /home/bieron/mpitest --hostfile hostfile -np 2 test_mpi.exe
+
+ssh pamir.if.uj.edu.pl setenv OMP_NUM_THREADS 4
+
+# lamboot lamnodes
+# mpirun -v -wd /home/bieron/mpitest --hostfile hostfile -np 3 test_mpi
+# mpirun -v -wd /home/bieron/mpitestrun           -np 6 test_mpi < input
+mpirun -wd /home/bieron/mpitestrun -np 6 test_mpi_OpenMP.exe < xinput > &youtput
+

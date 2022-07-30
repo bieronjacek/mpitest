@@ -1,0 +1,60 @@
+#!/bin/csh
+
+make purge
+make
+make clean
+
+# ./Batch_disks-mkdir
+
+cp input_threads /home/bieron/mpitestrun/input_threads
+cp input_chiffre  /home/bieron/mpitestrun/input_chiffre
+cp input_matrix  /home/bieron/mpitestrun/input_matrix
+
+setenv OMP_NUM_THREADS 7
+# setenv MP_SINGLE_THREAD 'no'
+
+# /opt/intel/impi/3.2.2.006/bin64/mpirun
+# /opt/intel/impi/3.2.2.006/bin/mpirun
+# /usr/mpi/gcc/mvapich-1.2.0/bin/mpirun
+# /usr/mpi/gcc/mvapich2-1.5.1/bin/mpirun 
+# /usr/mpi/gcc/openmpi-1.4.2/bin/mpirun
+# /usr/mpi/gcc/openmpi-1.4.2-qlc/bin/mpirun
+# /usr/mpi/intel/mvapich-1.2.0-qlc/bin/mpirun
+# /usr/mpi/intel/mvapich-1.2.0-qlc/examples/mpirun
+# /usr/mpi/intel/mvapich2-1.5.1-qlc/bin/mpirun
+# /usr/mpi/gcc/mvapich2-1.5.1/bin/mpirun
+# /usr/mpi/gcc/openmpi-1.4.2/bin/mpirun
+# /usr/mpi/intel/openmpi-1.4.2-qlc/bin/mpirun
+
+# /usr/mpi/qlogic/bin/mpirun -machinefile mpd.hosts -wdir /home/bieron/mpitestrun -np 3 ./test_mpi_OpenMP.exe < input_threads > youtput
+
+# /usr/mpi/qlogic/bin/mpirun
+
+mpirun -r ssh -genv I_MPI_DEVICE rdssm -np 3 ./test_mpi_OpenMP.exe < input_threads > youtput
+
+# mpirun -machinefile mpd.hosts -wdir /home/bieron/mpitestrun -np 3 ./test_mpi_OpenMP.exe < input_threads > youtput
+
+exit
+
+##############################################################################
+
+echo ; date  ; ./batch_run > zlog ; date ; echo ; gotowe
+
+# echo; date; echo ; ./batch_run ; date ; gotowe
+
+# cp test_mpi_OpenMP.exe /home/bieron/mpitestrun/test_mpi_OpenMP.exe
+
+# setenv OMP_NUM_THREADS 4
+
+mpirun -wd /home/bieron/mpitestrun -hostfile mpd.hosts -np 5
+
+mpirun -r ssh -genv I_MPI_DEVICE rdssm -np 4 ./test_mpi.exe
+mpirun  -v -wd /home/bieron/mpitest --hostfile hostfile -np 2 test_mpi.exe
+
+ssh pamir.if.uj.edu.pl setenv OMP_NUM_THREADS 4
+
+# lamboot lamnodes
+# mpirun -v -wd /home/bieron/mpitest --hostfile hostfile -np 3 test_mpi
+# mpirun -v -wd /home/bieron/mpitestrun           -np 6 test_mpi < input
+mpirun -wd /home/bieron/mpitestrun -np 6 test_mpi_OpenMP.exe < xinput > &youtput
+

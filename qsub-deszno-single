@@ -1,0 +1,20 @@
+#!/bin/csh
+#PBS -N mpitest-deszno-single
+#PBS -j eo
+#PBS -m bea
+#PBS -M bieron@lazy.if.uj.edu.pl
+
+# ------------------------------------------------------
+
+cd $PBS_O_WORKDIR
+
+cp $PBS_NODEFILE hostfile
+
+# ./batch_run  > & ./batch_run-
+/usr/mpi/qlogic/bin/mpirun \
+ -wdir /home/bieron/robota/mpitest/mpitest \
+ -machinefile hostfile -np 4 \
+ ./test_mpi_OpenMP.exe < input_threads > youtput
+
+# end script
+

@@ -1,0 +1,11 @@
+#!/bin/csh
+
+# /usr/mpi/qlogic/bin/mpirun
+
+/usr/mpi/qlogic/bin/mpirun \
+ -wdir /home/bieron/robota/mpitest/mpitest \
+ -machinefile hostfile -np 4 \
+ ./test_mpi_OpenMP.exe < input_threads > youtput
+
+exit
+

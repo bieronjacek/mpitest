@@ -1,0 +1,97 @@
+#
+# mpif90 gfortran
+# .cshrc.stub.mpitest
+#
+############################################################################
+
+# CC = mpicc
+# CFLAGS = -O
+
+FC = mpif90
+F90 = mpif90
+
+# OMPI_F
+OMPI_F77 = gfortran
+OMPI_FC = gfortran
+
+FFLAGS = -O1 
+F90FLAGS = $(FFLAGS)
+
+# FFLAGS = -O1 -fallow-argument-mismatch
+# debug options
+# F90FLAGS = -O0 -g -debug -traceback -zero -save --assume no2underscore
+# OMPI_FFLAGS = -O0
+# OMPI_FCFLAGS = -O0
+
+# loader 
+# LDFLAGS = -L/usr/lib -lmpi 
+# LD_FLAGS = ""
+# LD_FLAGS = -static-libgfortran -L/usr/lib
+
+# MPI_FFLAGS = ""
+MPI_FFLAGS = -fopenmp 
+
+# mpi lib
+# MPI_LIBDIR = /usr/lib/openmpi/lib 
+# MPI_LIBDIR = /opt/intel/impi/3.2.2.006/lib64
+# MPI_LIBDIR = /usr/lib/x86_64-linux-gnu
+# MPI_LIBDIR = /usr/lib
+
+# MPI_LIBLST = -lmpi
+# MPI_LIBLST = -lmpiif -lmpi
+# MPI_LIBLST = -lmpi -lmpi_f90 --lmpi_f77
+# MPI_LIBLST = -lmpi -lmpi_f90 
+# MPI_LIBLST = -lmpi 
+
+# include mpif.h
+# mpif.h
+# MPI_INC = ""
+# MPI_INC = -I/usr/local/include
+#
+# /usr/lib/x86_64-linux-gnu/fortran/gfortran-mod-15/openmpi/mpi.mod
+# /usr/lib/x86_64-linux-gnu/fortran/gfortran-mod-15/openmpi/mpi_f08.mod
+# USE mpi
+# MPI_INC = -I/usr/lib/x86_64-linux-gnu/openmpi/lib
+MPI_INC = -I/usr/lib/x86_64-linux-gnu/fortran/gfortran-mod-15/openmpi
+
+############################################################################
+
+EXE = test_mpi_OpenMP.exe
+
+OBJ = \
+program_test_mpi_OpenMP.o slaves.o gauss_summa.o matrixDotVector.o \
+loopthread.o \
+dlam0.o dlamch.o dlamc1.o dlamc2.o dlamc3.o lsame.o dlamc4.o dlamc5.o
+
+MOD = \
+module_mpi_universe.o module_io_numbers.o module_gauss_summa_interface.o module_matrixAXY.o
+
+$(EXE): $(OBJ) $(MOD)
+	$(FC) $(LDFLAGS) -o $@ $(OBJ) $(MOD) \
+	$(F90FLAGS) $(MPI_FFLAGS) $(MPI_INC) -L $(MPI_LIBDIR) $(MPI_LIBLST)
+
+# -openmp-profile 
+
+clean:
+	rm -f $(OBJ) *.mod *.o
+
+purge:
+	rm -f $(OBJ) *.mod *.o *.exe
+
+.SUFFIXES: $(SUFFIXES) .f90
+
+.f.o: 
+	$(FC) -c $(FFLAGS) $(MPI_FFLAGS) $(MPI_INC) $*.f
+
+.f90.o:
+	$(F90) -c $(F90FLAGS) $(MPI_FFLAGS) $(MPI_INC) $<
+
+gauss_summa.o: module_mpi_universe.o module_gauss_summa_interface.o
+
+matrixDotVector.o:  module_mpi_universe.o module_io_numbers.o module_matrixAXY.o
+
+slaves.o: module_mpi_universe.o module_io_numbers.o module_gauss_summa_interface.o
+
+program_test_mpi_OpenMP.o: module_mpi_universe.o module_io_numbers.o module_matrixAXY.o
+
+loopthread.o: module_io_numbers.o

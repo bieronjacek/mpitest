@@ -1,0 +1,46 @@
+#! /bin/csh
+#
+#  script to setup /home/bieron/dir?*  on ZOA local machines
+#                                                       J Bieron
+
+  set c01   = 'complex01'
+  set c02   = 'complex02'
+  set c03   = 'complex03'
+  set c04   = 'complex04'
+  set c05   = 'complex05'
+  set c06   = 'complex06'
+  set c07   = 'complex07'
+  set c08   = 'complex08'
+#
+
+set remote_hosts=( \
+ $c08 \
+ )
+
+echo
+echo remote_hosts: ${remote_hosts[*]}
+
+foreach remote_host ( ${remote_hosts} )
+  echo
+  echo remote_host: ${remote_host}
+  ssh ${remote_host} mkdir -p -v /home/bieron/mpitestrun
+  scp test_mpi_OpenMP.exe ${remote_host}:mpitestrun/test_mpi_OpenMP.exe
+  echo transfer to ${remote_host} done
+end
+
+echo
+scp input_chiffre ${c08}:mpitestrun/input_chiffre
+
+echo
+echo all host transfers done
+echo
+
+exit
+
+ $c01 \
+ $c02 \
+ $c03 \
+ $c04 \
+ $c05 \
+ $c06 \
+ $c07 \

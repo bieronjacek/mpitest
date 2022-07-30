@@ -1,0 +1,224 @@
+
+==================================================================== TODO''''
+
+------------------------------------------------------------------
+files to link 
+
+lns .cshrc.stub.mpitest .cshrc.stub.grasp
+
+------------------------------------------------------------------
+files to edit::
+
+vi mpd.hosts Batch_disks-mkdir bcrl
+
+vi Makefile
+vi input_chiffre input_matrix input_threads 
+
+==================================================================== COMPILERS
+
+------------------------------------------------------------------
+gfortran
+
+README files ::
+.cshrc.stub.mpitest
+module_mpi_universe.f90 :: 'mpif.h' vs 'USE mpi'
+Makefile
+
+------------------------------------------------------------------
+ifort
+
+Intel Software Development Products
+ http://www.intel.com/software/products/support/
+
+==================================================================== ERRORS
+
+------------------------------------------------------------------
+error = Type mismatch in calls to MPI_Send and MPI_Recv
+
+   36 |          call MPI_Send (msgLength, 1, MPI_INTEGER,       0, myid, &
+      |                        2
+   37 |                         MPI_COMM_WORLD, ierr)   ! Send msgLength
+   38 |          call MPI_Send (msg, msgLength, MPI_CHARACTER,   0, myid+nprocs, &
+      |                        1
+Error: Type mismatch between actual argument at (1) and actual argument at (2) (CHARACTER(32)/INTEGER(4)).
+
+3 solutions:
+1) use mpi
+2) -O -fallow-argument-mismatch
+3) c_loc see slaves.f90-c_loc
+
+"include mpif.h" 
+"use mpi" 
+"use mpi_f08" 
+
+==================================================================== TIMING
+==================================================================== 22222
+==================================================================== 1 thread
+threads=1
+
+nprocs = 113
+  full CPUtime used =    14374.1494      seconds
+  program end time = 182602.424
+program start time = 142605.640
+                      240 = 14400 seconds = 4h
+
+nprocs = 57
+ full CPUtime used =    5685.97705      seconds
+program start time = 223924.338
+  program end time = 001415.350
+                       95 = 5700 seconds = 1.5h
+
+nprocs = 28
+  full CPUtime used =    18181.1250      seconds
+program start time = 094701.255
+  program end time = 145027.024
+                      303 = 18180 seconds = 5h
+
+nprocs = 14
+  full CPUtime used =    12329.6729      seconds
+program start time = 145811.907
+  program end time = 182349.934
+                      205 = 12300 seconds = 3.5 h
+
+nprocs = 7
+ full CPUtime used =    29166.8223      seconds
+program start time = 184426.171
+  program end time = 025050.633
+                      474 = 28440 seconds = 8h
+
+nprocs = 4
+ full CPUtime used =    30166.2754      seconds
+program start time = 163937.501
+  program end time = 010245.295
+                      503 = 30180 seconds = 8h 20 min
+
+nprocs = 2
+full CPUtime used =    93210.6172      seconds
+ program start time = 183341.263
+   program end time = 202819.345
+                        1560 = 93600 seconds = 26h 
+
+==================================================================== TIMING
+==================================================================== 11111
+==================================================================== 1 thread
+threads=1
+
+-------------------------------
+
+youtput-0
+  full CPUtime used =    10703.4453      seconds = 178.39 min
+  program end time = 202219.683
+program start time = 172348.711
+-------------------------------
+                      178
+
+youtput-1
+  full CPUtime used =    10979.3809      seconds
+  program end time = 172343.258
+program start time = 142036.438
+-------------------------------
+                      183                       
+
+youtput-2
+  full CPUtime used =    5592.02002      seconds
+  program end time = 142030.534
+program start time = 124652.597
+-------------------------------
+                       94
+
+youtput-4
+  full CPUtime used =    3034.13428      seconds
+  program end time = 124646.426
+program start time = 115608.607
+-------------------------------
+                       50
+
+youtput-8
+  full CPUtime used =    9645.06738      seconds
+  program end time = 115601.216
+program start time = 091258.485
+-------------------------------
+                      154 
+                       
+  full CPUtime used =    7584.44531      seconds = 126 min
+  program end time = 230215.451
+program start time = 205421.380
+-------------------------------
+                      128 
+
+==================================================================== TIMING
+==================================================================== 11111
+==================================================================== 2 threads
+threads=2
+
+youtput-0
+program start time = 030844.717
+  program end time = 044147.619
+-------------------------------
+                       93
+  full CPUtime used =    11154.6973      seconds
+
+youtput-1
+program start time = 002153.105
+  program end time = 030837.969
+-------------------------------
+                      167
+  full CPUtime used =    19995.8477      seconds
+
+youtput-2
+program start time = 225616.912
+  program end time = 002145.473
+-------------------------------
+                       85
+  full CPUtime used =    10224.1230      seconds
+
+youtput-4
+program start time = 221237.022
+  program end time = 225611.533
+-------------------------------
+                       42    
+  full CPUtime used =    5191.50244      seconds
+                   
+youtput-8
+czw, 21 kwi 2022, 20:31:59 CEST
+czw, 21 kwi 2022, 22:01:55 CEST
+-------------------------------
+                       30 min
+program start time = 203202.925
+  program end time = 220155.429
+-------------------------------
+                       30 min
+  full CPUtime used =    5466.70020      seconds
+-------------------------------
+                       
+==================================================================== TIMING
+==================================================================== 4444
+
+youtput-1
+czw, 21 kwi 2022, 16:03:41 CEST
+czw, 21 kwi 2022, 17:29:25 CEST
+youtput-1
+  program end time = 172925.013
+program start time = 160341.938
+-------------------------------
+                       85
+
+youtput-2
+  program end time = 155458.994
+program start time = 151052.524
+-------------------------------
+                       44
+
+youtput-4
+  program end time = 150952.442
+program start time = 144641.866
+-------------------------------
+                       23
+
+youtput-8
+  program end time = 143804.987
+program start time = 140242.900
+-------------------------------
+                       35
+
+

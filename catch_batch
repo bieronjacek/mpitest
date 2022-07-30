@@ -1,0 +1,23 @@
+#!/bin/csh
+
+cp -f input_threads-2 input_threads
+echo ; date  ; ./batch_run > ./batch_run- ; date ; echo ; gotowe
+mv youtput youtput-8888-1n-2t
+mv ./batch_run- ./batch_run-1n-2t
+
+exit
+
+sleep 11
+
+cp -f input_threads-3 input_threads
+echo ; date  ; ./batch_run > ./batch_run- ; date ; echo ; gotowe
+mv youtput youtput-8888-1n-3t
+mv ./batch_run- ./batch_run-1n-3t
+
+sleep 11
+
+cp -f input_threads-4 input_threads
+echo ; date  ; ./batch_run > ./batch_run- ; date ; echo ; gotowe
+mv youtput youtput-8888-1n-4t
+mv ./batch_run- ./batch_run-1n-4t
+

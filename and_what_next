@@ -1,0 +1,11 @@
+#!/bin/csh
+#
+
+ exit
+
+cd /home/bieron/robota/80/sp/8ci
+
+./batch-nohup
+
+exit
+

@@ -1,0 +1,17 @@
+#!/bin/csh
+#
+
+bcrl > & bcrl- &
+# batch_compile_run_lazy >& batch_compile_run_lazy- &
+
+exit
+
+
+batch_compile_run_deszno
+batch_compile_run_lazy
+batch_run_deszno
+batch_run_lazy
+batch_run_qlogic
+bcrl
+catch_batch
+
